@@ -1,9 +1,10 @@
 package mx.raze.geomaps.models;
 
 import com.ibm.cloud.cloudant.v1.model.Document;
-
 import mx.raze.geomaps.persistence.CloudantEntity;
+import javax.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 public class Place extends CloudantEntity {
 
     private String docId;
@@ -14,6 +15,8 @@ public class Place extends CloudantEntity {
     private String address;
     private String serviceTime;
     private Document document;
+
+    private static final String DB_NAME = "places";
 
 
     public Place(String docId, String name, String description, String phoneNumber, String address, String serviceTime, String dbName) {
@@ -27,8 +30,8 @@ public class Place extends CloudantEntity {
         setDocumentFromProperties();
     }
     
-    public Place(String dbName) {
-        super(dbName);
+    public Place() {
+        super(DB_NAME);
     }
 
     public String getDocId() {
