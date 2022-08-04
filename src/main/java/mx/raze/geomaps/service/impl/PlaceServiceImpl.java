@@ -6,6 +6,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.ibm.cloud.cloudant.v1.model.Document;
+import com.ibm.cloud.cloudant.v1.model.DocumentResult;
+
 import java.util.Collections;
 
 import mx.raze.geomaps.models.Place;
@@ -15,9 +17,10 @@ import mx.raze.geomaps.service.PlaceService;
 public class PlaceServiceImpl implements PlaceService {
 
     @Inject
-    private Place placeRepository;
+    Place placeRepository;
 
     private Document document;
+    private DocumentResult documentResult;
 
     @Override
     public List<Document> getAllPlaces() {
@@ -36,10 +39,25 @@ public class PlaceServiceImpl implements PlaceService {
         return this.document;
     }
 
+    public DocumentResult createPlace(Place place) {
+        try {
+
+            this.documentResult = placeRepository.postDocument(place.getDocument());
+        } catch (Exception e) {
+
+        }
+        return this.documentResult;
+    }
+
     @Override
-    public Document createPlace(Document document) {
-        // TODO Auto-generated method stub
-        return null;
+    public DocumentResult createPlace(Document document) {
+        try {
+            this.documentResult = placeRepository.postDocument(document);
+        } catch (Exception e) {
+            //TODO: handle exception
+            System.out.println(e.getMessage());
+        }
+        return this.documentResult;
     }
 
     @Override

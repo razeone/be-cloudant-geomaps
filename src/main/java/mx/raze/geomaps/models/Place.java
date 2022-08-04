@@ -14,19 +14,21 @@ public class Place extends CloudantEntity {
     private String phoneNumber;
     private String address;
     private String serviceTime;
+    private Geometry geometry;
     private Document document;
 
     private static final String DB_NAME = "places";
 
 
-    public Place(String docId, String name, String description, String phoneNumber, String address, String serviceTime, String dbName) {
-        super(dbName);
+    public Place(String docId, String name, String description, String phoneNumber, String address, String serviceTime, Geometry geometry) {
+        super(DB_NAME);
         this.docId = docId;
         this.name = name;
         this.description = description;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.serviceTime = serviceTime;
+        this.geometry = geometry;
         setDocumentFromProperties();
     }
     
@@ -106,7 +108,19 @@ public class Place extends CloudantEntity {
         this.document.put("phoneNumber", this.phoneNumber);
         this.document.put("address", this.address);
         this.document.put("serviceTime", this.serviceTime);
+        this.document.put("geometry", this.geometry);
     }
 
+    public void setPropertiesFromDocument() {
+        this.docId = this.document.getId();
+    }
+
+    public Geometry getGeometry() {
+        return this.geometry;
+    }
+
+    public void setGeometry(Geometry geometry) {
+        this.geometry = geometry;
+    }
 
 }

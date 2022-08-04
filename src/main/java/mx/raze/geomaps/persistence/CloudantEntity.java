@@ -58,12 +58,13 @@ public abstract class CloudantEntity extends CloudantEntityBase {
         this.postDocumentOptions = postDocumentOptions;
     }
 
-    public void setPostDocumentOptions(Document document) {
+    public void setPostDocumentOptionsEnt(Document document) {
         this.postDocumentOptions = new PostDocumentOptions.Builder()
         .db(this.dbName)
         .document(document).build();
     }
 
+    
     public PutDocumentOptions getPutDocumentOptions() {
         return this.putDocumentOptions;
     }
@@ -97,7 +98,7 @@ public abstract class CloudantEntity extends CloudantEntityBase {
 
     @Override
     public DocumentResult postDocument(Document document) {
-        setPostDocumentOptions(document);
+        setPostDocumentOptionsEnt(document);
         return this.getCloudantInstance().postDocument(this.postDocumentOptions).execute().getResult();
     }
 
