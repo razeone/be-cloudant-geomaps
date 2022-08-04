@@ -113,6 +113,13 @@ public class Place extends CloudantEntity {
 
     public void setPropertiesFromDocument() {
         this.docId = this.document.getId();
+        this.rev = this.document.getRev();
+        this.name = this.document.get("name").toString();
+        this.description = this.document.get("description").toString();
+        this.phoneNumber = this.document.get("phoneNumber").toString();
+        this.address = this.document.get("address").toString();
+        this.serviceTime = this.document.get("serviceTime").toString();
+        this.geometry = (Geometry) this.document.get("geometry");
     }
 
     public Geometry getGeometry() {

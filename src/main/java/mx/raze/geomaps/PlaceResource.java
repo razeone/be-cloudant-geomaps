@@ -36,9 +36,13 @@ public class PlaceResource {
 
     @POST
     //@Transactional
+    //public Map<String, Object> post(Place place) {
     public Map<String, Object> post(Place place) {
         System.out.println("Im here");
         //System.out.println("posting place: " + place.getGeometry().getCoordinates().toString());
+        place.setDocumentFromProperties();
+        System.out.println(place.getDocument().toString());
+        System.out.println(place.getDbName());
         return Collections.emptyMap();
     }
 
