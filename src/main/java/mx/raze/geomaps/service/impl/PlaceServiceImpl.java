@@ -1,14 +1,13 @@
 package mx.raze.geomaps.service.impl;
 
 import java.util.List;
+import java.util.Collections;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.ibm.cloud.cloudant.v1.model.Document;
 import com.ibm.cloud.cloudant.v1.model.DocumentResult;
-
-import java.util.Collections;
 
 import mx.raze.geomaps.models.Place;
 import mx.raze.geomaps.service.PlaceService;
@@ -19,9 +18,6 @@ public class PlaceServiceImpl implements PlaceService {
     @Inject
     Place placeRepository;
 
-    private Document document;
-    private DocumentResult documentResult;
-
     @Override
     public List<Document> getAllPlaces() {
         // TODO Auto-generated method stub
@@ -30,38 +26,17 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public Document getPlaceById(String id) {
-        try {
-            this.document = placeRepository.getDocumentById(id);
-        } catch (Exception e) {
-            //TODO: handle exception
-            System.out.println(e.getMessage());
-        }
-        return this.document;
+        return placeRepository.getDocumentById(id);
     }
 
+    @Override
     public DocumentResult createPlace(Place place) {
-        try {
-
-            this.documentResult = placeRepository.postDocument(place.getDocument());
-        } catch (Exception e) {
-
-        }
-        return this.documentResult;
+        place.validateToCreate();
+        return placeRepository.postDocument(place.getDocument());
     }
 
     @Override
-    public DocumentResult createPlace(Document document) {
-        try {
-            this.documentResult = placeRepository.postDocument(document);
-        } catch (Exception e) {
-            //TODO: handle exception
-            System.out.println(e.getMessage());
-        }
-        return this.documentResult;
-    }
-
-    @Override
-    public Document updatePlace(Document document, String id) {
+    public Document updatePlace(Place place) {
         // TODO Auto-generated method stub
         return null;
     }

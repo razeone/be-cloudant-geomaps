@@ -2,6 +2,10 @@ package mx.raze.geomaps.models;
 
 import com.ibm.cloud.cloudant.v1.model.Document;
 import mx.raze.geomaps.persistence.CloudantEntity;
+
+import java.util.Date;
+import java.sql.Timestamp;
+
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -16,6 +20,7 @@ public class Place extends CloudantEntity {
     private String serviceTime;
     private Geometry geometry;
     private Document document;
+    private Date timestamp;
 
     private static final String DB_NAME = "places";
 
@@ -109,6 +114,7 @@ public class Place extends CloudantEntity {
         this.document.put("address", this.address);
         this.document.put("serviceTime", this.serviceTime);
         this.document.put("geometry", this.geometry);
+        this.document.put("timestamp", this.timestamp);
     }
 
     public void setPropertiesFromDocument() {
@@ -128,6 +134,25 @@ public class Place extends CloudantEntity {
 
     public void setGeometry(Geometry geometry) {
         this.geometry = geometry;
+    }
+
+    protected boolean isValid() {
+        return this.address != null && this.description != null && this.name != null && this.phoneNumber != null && this.geometry != null;
+    }
+
+    public void setTimestampToNow() {
+        this.timestamp = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void validateToCreate() {
+        if(this.isValid()) {
+            this.docId = null;
+            this.setTimestampToNow();
+            this.setDocumentFromProperties();
+        }
+        else {
+            throw new IllegalArgumentException("Place is not valid");
+        }
     }
 
 }
