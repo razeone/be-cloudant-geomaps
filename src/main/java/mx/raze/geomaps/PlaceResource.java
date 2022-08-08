@@ -39,7 +39,7 @@ public class PlaceResource {
     @Transactional
     public Response post(Place place) {
         try {
-            return Response.status(Status.OK).entity(placeService.createPlace(place)).build();
+            return Response.status(Status.CREATED).entity(placeService.createPlace(place)).build();
         }
         catch (IllegalArgumentException e) {
             return Response.status(Status.BAD_REQUEST).entity(getError()).build();
