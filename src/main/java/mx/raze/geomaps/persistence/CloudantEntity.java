@@ -135,6 +135,7 @@ public abstract class CloudantEntity extends CloudantEntityBase {
     @Override
     public DocumentResult putDocument(Document document, String docId) {
         setPutDocumentOptions(docId, document);
+        System.out.println(getPutDocumentOptions());
         return this.getCloudantInstance().putDocument(this.putDocumentOptions).execute().getResult();
     }
 

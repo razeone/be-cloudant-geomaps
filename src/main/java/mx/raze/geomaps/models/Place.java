@@ -157,7 +157,11 @@ public class Place extends CloudantEntity {
 
     public void validateToUpdate() {
         if(this.isValid()) {
-
+            this.setTimestampToNow();
+            this.setDocumentFromProperties();
+        }
+        else {
+            throw new IllegalArgumentException("Place is not valid to update");
         }
     }
 

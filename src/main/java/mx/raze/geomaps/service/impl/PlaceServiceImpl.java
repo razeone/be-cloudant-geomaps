@@ -4,14 +4,13 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.ibm.cloud.cloudant.v1.model.AllDocsResult;
-import com.ibm.cloud.cloudant.v1.model.DocsResultRow;
 import com.ibm.cloud.cloudant.v1.model.Document;
 import com.ibm.cloud.cloudant.v1.model.DocumentResult;
 
 import mx.raze.geomaps.models.Place;
 import mx.raze.geomaps.service.PlaceService;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -53,14 +52,24 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
+    public DocumentResult updatePlace(String docId, Place place) {
+        place.validateToUpdate();
+        return placeRepository.putDocument(place.getDocument(), docId);
+    }
+
+    @Override
     public void deletePlace(String id) {
         // TODO Auto-generated method stub
         
     }
 
     public List<Map> parseAllDocsResult(AllDocsResult allDocsResult) {
-        List<Map> result = new ArrayList<>();
-        allDocsResult.getRows().stream().forEach((d) -> result.add(d.getDoc().getProperties()));
+        List<Map> result = new LinkedList<>();
+        allDocsResult.getRows().stream().forEach((d) -> {
+            Map<String, Object> doc = d.getDoc().getProperties();
+            doc.put("_id", d.getId());
+            result.add(doc);
+        });
         return result;
     }
     

@@ -11,11 +11,13 @@ import java.util.Map;
 
 public interface PlaceService {
 
-    public AllDocsResult getAllPlaces();
-    public Document getPlaceById(String id);
-    public DocumentResult createPlace(Place place);
-    public DocumentResult updatePlace(Place place);
-    public void deletePlace(String id);
+    AllDocsResult getAllPlaces();
+    Document getPlaceById(String id);
+    DocumentResult createPlace(Place place);
+    DocumentResult updatePlace(Place place);
+    void deletePlace(String id);
 
     List<Map> parseAllDocsResult(AllDocsResult allDocsResult);
+
+    DocumentResult updatePlace(String id, Place place);
 }
