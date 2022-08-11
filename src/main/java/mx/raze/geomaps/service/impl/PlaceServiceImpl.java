@@ -4,11 +4,16 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.ibm.cloud.cloudant.v1.model.AllDocsResult;
+import com.ibm.cloud.cloudant.v1.model.DocsResultRow;
 import com.ibm.cloud.cloudant.v1.model.Document;
 import com.ibm.cloud.cloudant.v1.model.DocumentResult;
 
 import mx.raze.geomaps.models.Place;
 import mx.raze.geomaps.service.PlaceService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class PlaceServiceImpl implements PlaceService {
@@ -51,6 +56,12 @@ public class PlaceServiceImpl implements PlaceService {
     public void deletePlace(String id) {
         // TODO Auto-generated method stub
         
+    }
+
+    public List<Map> parseAllDocsResult(AllDocsResult allDocsResult) {
+        List<Map> result = new ArrayList<>();
+        allDocsResult.getRows().stream().forEach((d) -> result.add(d.getDoc().getProperties()));
+        return result;
     }
     
 }

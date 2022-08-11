@@ -1,6 +1,7 @@
 package mx.raze.geomaps;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -14,6 +15,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.ibm.cloud.cloudant.v1.model.Document;
 import com.ibm.cloud.sdk.core.service.exception.NotFoundException;
 
 import mx.raze.geomaps.models.Place;
@@ -33,7 +35,7 @@ public class PlaceResource {
     @GET
     public Response getAllPlaces() {
         try {
-            return Response.status(Status.OK).entity(placeService.getAllPlaces().getRows()).build();
+            return Response.status(Status.OK).entity(placeService.parseAllDocsResult(placeService.getAllPlaces())).build();
         }
         catch (Exception e) {
             setError(GENERIC_SERVER_ERROR);
