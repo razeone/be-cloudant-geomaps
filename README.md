@@ -1,6 +1,6 @@
 # be-cloudant-geomaps Project
 
-[![Build Status](https://app.travis-ci.com/razeone/be-cloudant-geomaps.svg?branch=main)](https://app.travis-ci.com/razeone/be-cloudant-geomaps)
+[![Build Status](https://app.travis-ci.com/razeone/be-cloudant-geomaps.svg?branch=master)](https://app.travis-ci.com/razeone/be-cloudant-geomaps)
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
