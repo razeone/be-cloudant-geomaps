@@ -155,4 +155,10 @@ public class Place extends CloudantEntity {
         }
     }
 
+    public void validateToUpdate() {
+        if(this.isValid()) {
+
+        }
+    }
+
 }

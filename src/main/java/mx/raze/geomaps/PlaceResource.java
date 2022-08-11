@@ -1,8 +1,6 @@
 package mx.raze.geomaps;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -16,6 +14,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.ibm.cloud.sdk.core.service.exception.NotFoundException;
+
 import mx.raze.geomaps.models.Place;
 import mx.raze.geomaps.service.PlaceService;
 
@@ -27,11 +27,18 @@ public class PlaceResource {
     PlaceService placeService;
 
     private HashMap<String, String> error = new HashMap<>();
+    private final static String GENERIC_CLIENT_ERROR = "Bad request, check parameters";
+    private final static String GENERIC_SERVER_ERROR = "Internal server error, if the error persists, notify your administrator";
 
     @GET
-    public List<Object> getAllPlaces() {
-        // TODO: implement search feature
-        return Collections.emptyList();
+    public Response getAllPlaces() {
+        try {
+            return Response.status(Status.OK).entity(placeService.getAllPlaces().getRows()).build();
+        }
+        catch (Exception e) {
+            setError(GENERIC_SERVER_ERROR);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(getError()).build();
+        }
     }
 
 
@@ -42,9 +49,11 @@ public class PlaceResource {
             return Response.status(Status.CREATED).entity(placeService.createPlace(place)).build();
         }
         catch (IllegalArgumentException e) {
+            setError(e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(getError()).build();
         }
         catch (Exception e) {
+            setError(GENERIC_SERVER_ERROR);
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(getError()).build();
         }
     }
@@ -56,25 +65,34 @@ public class PlaceResource {
             return Response.status(Status.OK).entity(placeService.getPlaceById(id).getProperties()).build();
         }
         catch (IllegalArgumentException e) {
+            setError(GENERIC_CLIENT_ERROR);
             return Response.status(Status.BAD_REQUEST).entity(getError()).build();
         }
+        catch (NotFoundException e) {
+            setError(e.getMessage());
+            return Response.status(Status.NOT_FOUND).entity(getError()).build();
+        }
         catch (Exception e) {
+            setError(GENERIC_SERVER_ERROR);
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(getError()).build();
         }
     }
 
 
     @PUT
+    @Transactional
     @Path("/{id}")
-    public Response put(@PathParam("id") String id) {
+    public Response put(@PathParam("id") String id, Place place) {
         try {
             //// TODO: put document implemented on service layer
             return Response.status(Status.OK).entity(placeService.getPlaceById(id).getProperties()).build();
         }
         catch (IllegalArgumentException e) {
+            setError("Illegal arguments");
             return Response.status(Status.BAD_REQUEST).entity(getError()).build();
         }
         catch (Exception e) {
+            setError("Internal server error");
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(getError()).build();
         }
     }

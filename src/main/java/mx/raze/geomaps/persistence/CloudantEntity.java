@@ -1,11 +1,6 @@
 package mx.raze.geomaps.persistence;
 
-import com.ibm.cloud.cloudant.v1.model.Document;
-import com.ibm.cloud.cloudant.v1.model.DocumentResult;
-import com.ibm.cloud.cloudant.v1.model.GetDocumentOptions;
-import com.ibm.cloud.cloudant.v1.model.PostDocumentOptions;
-import com.ibm.cloud.cloudant.v1.model.PutDocumentOptions;
-import com.ibm.cloud.cloudant.v1.model.DeleteDocumentOptions;
+import com.ibm.cloud.cloudant.v1.model.*;
 
 import mx.raze.geomaps.persistence.dao.CloudantEntityBase;
 
@@ -16,6 +11,7 @@ public abstract class CloudantEntity extends CloudantEntityBase {
     private PostDocumentOptions postDocumentOptions;
     private PutDocumentOptions putDocumentOptions;
     private DeleteDocumentOptions deleteDocumentOptions;
+    private PostAllDocsOptions postAllDocsOptions;
     
     protected CloudantEntity() {
         super();
@@ -58,6 +54,23 @@ public abstract class CloudantEntity extends CloudantEntityBase {
         this.postDocumentOptions = postDocumentOptions;
     }
 
+    public void setPostAllDocsOptions(Long limit) {
+        this.postAllDocsOptions = new PostAllDocsOptions.Builder()
+                .db(this.dbName)
+                .includeDocs(true)
+                .limit(limit)
+                .build();
+    }
+
+    public void setPostAllDocsOptions(Long limit, String startKey) {
+        this.postAllDocsOptions = new PostAllDocsOptions.Builder()
+                .db(this.dbName)
+                .includeDocs(true)
+                .startKey(startKey)
+                .limit(limit)
+                .build();
+    }
+
     public void setPostDocumentOptionsEnt(Document document) {
         this.postDocumentOptions = new PostDocumentOptions.Builder()
         .db(this.dbName)
@@ -94,6 +107,11 @@ public abstract class CloudantEntity extends CloudantEntityBase {
             .db(this.dbName)
             .docId(docId)
             .build();
+    }
+
+    public AllDocsResult getAllDocs(Long limit) {
+        setPostAllDocsOptions(limit);
+        return getAllDocs(this.postAllDocsOptions);
     }
 
     @Override

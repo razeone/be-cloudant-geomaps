@@ -28,19 +28,19 @@ public class PlaceEndpointTest {
             "    ]\n" +
             "  }\n" +
             "}";
+    static final String EXISTING_DOC_ID = "152b04ab806c5b58bdd89258f78db3a1";
+    static final String NOT_FOUND = "not_found";
     //static final String NOT_FOUND_RESPONSE = "CardTransaction 999 not found";
     //static final String INVALID_CARD_TRANSACTION_TO_UPDATE = "Invalid CardTransaction to update";
-    
-    /*
+
     @Test
-    public void testCardTransactionController() throws Exception {
+    public void testPlacesResourceGetAllDocs() throws Exception {
         given()
           .when().get(PATH)
           .then()
              .statusCode(200)
              .body(startsWith("["));
     }
-    */
 
     @Test
     public void testPlacesResourcePost() throws Exception {
@@ -51,6 +51,24 @@ public class PlaceEndpointTest {
           .then()
              .statusCode(201)
              .body(containsString("\"id\":"));
+    }
+
+    @Test
+    public void testPlacesResourceGetById() throws Exception {
+        given()
+                .when().get(PATH + "/" + EXISTING_DOC_ID)
+                .then()
+                .statusCode(200)
+                .body(startsWith("{"));
+    }
+
+    @Test
+    public void testPlacesResourceGetByIdNotFound() throws Exception {
+        given()
+                .when().get(PATH + "/1")
+                .then()
+                .statusCode(404)
+                .body(containsString(NOT_FOUND));
     }
     
 }

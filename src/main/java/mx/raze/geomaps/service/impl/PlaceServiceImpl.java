@@ -1,11 +1,9 @@
 package mx.raze.geomaps.service.impl;
 
-import java.util.List;
-import java.util.Collections;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import com.ibm.cloud.cloudant.v1.model.AllDocsResult;
 import com.ibm.cloud.cloudant.v1.model.Document;
 import com.ibm.cloud.cloudant.v1.model.DocumentResult;
 
@@ -18,10 +16,18 @@ public class PlaceServiceImpl implements PlaceService {
     @Inject
     Place placeRepository;
 
+    private static final Long DEFAULT_LIMIT = Long.valueOf(10);
+
     @Override
-    public List<Document> getAllPlaces() {
-        // TODO Auto-generated method stub
-        return Collections.emptyList();
+    public AllDocsResult getAllPlaces() {
+        return getAllPlaces(DEFAULT_LIMIT);
+    }
+
+    public AllDocsResult getAllPlaces(Long limit) {
+        if(limit > 0) {
+            return placeRepository.getAllDocs(limit);
+        }
+        return placeRepository.getAllDocs(DEFAULT_LIMIT);
     }
 
     @Override
@@ -36,9 +42,9 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public Document updatePlace(Place place) {
-        // TODO Auto-generated method stub
-        return null;
+    public DocumentResult updatePlace(Place place) {
+        place.validateToUpdate();
+        return placeRepository.putDocument(place.getDocument(), place.getDocId());
     }
 
     @Override
