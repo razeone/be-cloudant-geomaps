@@ -115,6 +115,9 @@ public class Place extends CloudantEntity {
         this.document.put("serviceTime", this.serviceTime);
         this.document.put("geometry", this.geometry);
         this.document.put("timestamp", this.timestamp);
+        if(this.rev != null){
+            this.document.put("_rev", this.rev);
+        }
     }
 
     public void setPropertiesFromDocument() {
@@ -140,6 +143,10 @@ public class Place extends CloudantEntity {
         return this.address != null && this.description != null && this.name != null && this.phoneNumber != null && this.geometry != null;
     }
 
+    protected boolean isValidToUpdate() {
+        return isValid() && this.rev != null;
+    }
+
     public void setTimestampToNow() {
         this.timestamp = new Timestamp(System.currentTimeMillis());
     }
@@ -156,7 +163,7 @@ public class Place extends CloudantEntity {
     }
 
     public void validateToUpdate() {
-        if(this.isValid()) {
+        if(this.isValidToUpdate()) {
             this.setTimestampToNow();
             this.setDocumentFromProperties();
         }

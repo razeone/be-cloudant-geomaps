@@ -68,6 +68,7 @@ public class PlaceServiceImpl implements PlaceService {
         allDocsResult.getRows().stream().forEach((d) -> {
             Map<String, Object> doc = d.getDoc().getProperties();
             doc.put("_id", d.getId());
+            doc.put("_rev", d.getValue().getRev());
             result.add(doc);
         });
         return result;

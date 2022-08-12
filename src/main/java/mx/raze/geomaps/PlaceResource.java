@@ -10,10 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.ibm.cloud.cloudant.v1.Cloudant;
-import com.ibm.cloud.cloudant.v1.model.Document;
-import com.ibm.cloud.cloudant.v1.model.DocumentResult;
-import com.ibm.cloud.cloudant.v1.model.PutDocumentOptions;
+import com.ibm.cloud.sdk.core.service.exception.ConflictException;
 import com.ibm.cloud.sdk.core.service.exception.NotFoundException;
 
 import mx.raze.geomaps.models.Place;
@@ -38,6 +35,7 @@ public class PlaceResource {
             return Response.status(Status.OK).entity(placeService.parseAllDocsResult(placeService.getAllPlaces())).build();
         }
         catch (Exception e) {
+            System.out.println(e.getMessage());
             setError(GENERIC_SERVER_ERROR);
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(getError()).build();
         }
@@ -80,48 +78,29 @@ public class PlaceResource {
         }
     }
 
-
     @PUT
     @Transactional
     @Path("/{id}")
     public Response put(@PathParam("id") String id, Place place) {
-        Cloudant service = Cloudant.newInstance();
-        Document eventDoc = new Document();
-        eventDoc.put("type", "event");
-        eventDoc.put("userid", "abc123");
-        eventDoc.put("eventType", "addedToBasket");
-        eventDoc.put("productId", "10000442");
-        eventDoc.put("date", "2019-01-28T10:44:22.000Z");
-        PutDocumentOptions documentOptions =
-                new PutDocumentOptions.Builder()
-                        .db("places")
-                        .docId("06ff2e6fe6c8806702b722a2d8891983")
-                        .document(eventDoc)
-                        .build();
-        DocumentResult response =
-                service.putDocument(documentOptions).execute()
-                        .getResult();
-        System.out.println(response);
-        return Response.status(Status.OK).entity(response).build();
-        /*
-        return Response.status(Status.OK).entity(placeService.updatePlace(id, place)).build();
-
         try {
             return Response.status(Status.OK).entity(placeService.updatePlace(id, place)).build();
         }
-        catch (IllegalArgumentException e) {
+        catch (IllegalArgumentException | ConflictException e) {
             setError(GENERIC_CLIENT_ERROR);
             return Response.status(Status.BAD_REQUEST).entity(getError()).build();
         }
+        catch (NotFoundException e) {
+            setError(e.getMessage());
+            return Response.status(Status.NOT_FOUND).entity(getError()).build();
+        }
         catch (Exception e) {
             setError(GENERIC_SERVER_ERROR);
-            System.out.println(e);
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(getError()).build();
         }
-        */
     }
 
     @DELETE
+    @Transactional
     @Path("/{id}")
     public Response delete(@PathParam("id") String id) {
         try {
