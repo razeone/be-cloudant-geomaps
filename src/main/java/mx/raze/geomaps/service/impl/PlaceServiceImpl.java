@@ -53,6 +53,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public DocumentResult updatePlace(String docId, Place place) {
+        Document existingDocument = getPlaceById(docId);
+        place.setRev(existingDocument.getRev());
         place.validateToUpdate();
         return placeRepository.putDocument(place.getDocument(), docId);
     }
