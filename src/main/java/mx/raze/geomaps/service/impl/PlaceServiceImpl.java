@@ -59,8 +59,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public void deletePlace(String id) {
-        // TODO Auto-generated method stub
-        
+        Document existingDocument = getPlaceById(id);
+        placeRepository.deleteDocument(existingDocument.getId(), existingDocument.getRev());
     }
 
     public List<Map> parseAllDocsResult(AllDocsResult allDocsResult) {

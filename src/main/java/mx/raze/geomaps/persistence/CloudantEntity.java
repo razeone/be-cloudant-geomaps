@@ -102,10 +102,11 @@ public abstract class CloudantEntity extends CloudantEntityBase {
         this.deleteDocumentOptions = deleteDocumentOptions;
     }
 
-    public void setDeleteDocumentOptions(String docId) {
+    public void setDeleteDocumentOptions(String docId, String rev) {
         this.deleteDocumentOptions = new DeleteDocumentOptions.Builder()
             .db(this.dbName)
             .docId(docId)
+            .rev(rev)
             .build();
     }
 
@@ -127,10 +128,11 @@ public abstract class CloudantEntity extends CloudantEntityBase {
     }
 
     @Override
-    public DocumentResult deleteDocument(String docId) {
-        setDeleteDocumentOptions(docId);
+    public DocumentResult deleteDocument(String docId, String rev) {
+        setDeleteDocumentOptions(docId, rev);
         return this.getCloudantInstance().deleteDocument(this.deleteDocumentOptions).execute().getResult();
     }
+
 
     @Override
     public DocumentResult putDocument(Document document, String docId) {
