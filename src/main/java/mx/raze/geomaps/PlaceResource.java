@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ibm.cloud.sdk.core.service.exception.ConflictException;
@@ -34,7 +33,7 @@ public class PlaceResource {
     @Inject
     PlaceService placeService;
 
-    private HashMap<String, String> error = new HashMap<>();
+    private final HashMap<String, String> error = new HashMap<>();
     private final static String GENERIC_CLIENT_ERROR = "Bad request, check parameters";
     private final static String GENERIC_SERVER_ERROR = "Internal server error, if the error persists, notify your administrator";
 
@@ -141,7 +140,7 @@ public class PlaceResource {
 
         @Override
         public Response toResponse(Exception exception) {
-            int code = 400;
+            int code = 500;
             if (exception instanceof WebApplicationException) {
                 code = ((WebApplicationException) exception).getResponse().getStatus();
             }
