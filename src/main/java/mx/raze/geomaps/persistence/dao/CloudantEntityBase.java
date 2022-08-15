@@ -90,7 +90,7 @@ public abstract class CloudantEntityBase implements CloudantDAO {
 
     public abstract DocumentResult postDocument(Document document);
     public abstract Document getDocumentById(String docId);
-    public abstract DocumentResult deleteDocument(String docId);
+    public abstract DocumentResult deleteDocument(String docId, String rev);
     public abstract DocumentResult putDocument(Document document, String docId);
 
 }
