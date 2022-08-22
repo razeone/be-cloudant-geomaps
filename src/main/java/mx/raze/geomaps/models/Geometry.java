@@ -26,4 +26,8 @@ public class Geometry {
     public void setCoordinates(List<Double> coordinates) {
         this.coordinates = coordinates;
     }
+
+    protected boolean isNotEmpty() {
+        return this.coordinates.get(0) != null && this.coordinates.get(1) != null;
+    }
 }

@@ -55,11 +55,12 @@ public class PlaceResource {
     @POST
     @Transactional
     public Response post(Place place) {
-
+        LOG.info("Trying to create new place");
         try {
             return Response.status(Status.CREATED).entity(placeService.createPlace(place)).build();
         }
         catch (IllegalArgumentException e) {
+            LOG.error(e.getMessage());
             setError(e.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(getError()).build();
         }

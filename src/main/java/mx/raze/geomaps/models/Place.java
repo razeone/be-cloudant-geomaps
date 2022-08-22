@@ -139,8 +139,12 @@ public class Place extends CloudantEntity {
         this.geometry = geometry;
     }
 
+    protected boolean isNotEmpty(){
+        return !"".equals(this.address) && !"".equals(this.description) && !"".equals(this.name) && !"".equals(this.phoneNumber) && this.geometry.isNotEmpty();
+    }
+
     protected boolean isValid() {
-        return this.address != null && this.description != null && this.name != null && this.phoneNumber != null && this.geometry != null;
+        return this.address != null && this.description != null && this.name != null && this.phoneNumber != null && this.geometry != null && this.isNotEmpty();
     }
 
     protected boolean isValidToUpdate() {
