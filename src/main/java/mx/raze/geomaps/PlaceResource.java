@@ -34,8 +34,8 @@ public class PlaceResource {
     PlaceService placeService;
 
     private final HashMap<String, String> error = new HashMap<>();
-    private final static String GENERIC_CLIENT_ERROR = "Bad request, check parameters";
-    private final static String GENERIC_SERVER_ERROR = "Internal server error, if the error persists, notify your administrator";
+    private static final String GENERIC_CLIENT_ERROR = "Bad request, check parameters";
+    private static final String GENERIC_SERVER_ERROR = "Internal server error, if the error persists, notify your administrator";
 
     @GET
     public Response getAllPlaces() {
