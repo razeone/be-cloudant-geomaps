@@ -43,7 +43,7 @@ public class PlaceEndpointTest {
             "    ]\n" +
             "  }\n" +
             "}";
-    static final String EXISTING_DOC_ID = "152b04ab806c5b58bdd89258f78db3a1";
+    static final String EXISTING_DOC_ID = "33c84e2c4259915b106d82c7eb1eb3dc";
     static final String NOT_FOUND = "not_found";
 
     @Test
