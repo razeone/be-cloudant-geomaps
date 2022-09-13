@@ -17,7 +17,7 @@ public interface PlaceService {
     DocumentResult updatePlace(Place place);
     void deletePlace(String id);
 
-    List<Map> parseAllDocsResult(AllDocsResult allDocsResult);
+    List<Map<String, Object>> parseAllDocsResult(AllDocsResult allDocsResult);
 
     DocumentResult updatePlace(String id, Place place);
 }
