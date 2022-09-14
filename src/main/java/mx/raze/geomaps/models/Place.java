@@ -8,6 +8,9 @@ import java.sql.Timestamp;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import org.eclipse.microprofile.config.ConfigProvider;
+
+
 @ApplicationScoped
 public class Place extends CloudantEntity {
 
@@ -22,7 +25,7 @@ public class Place extends CloudantEntity {
     private Document document;
     private Date timestamp;
 
-    private static final String DB_NAME = "places";
+    private static final String DB_NAME = ConfigProvider.getConfig().getValue("cloudant.database", String.class);;
 
 
     public Place(String docId, String name, String description, String phoneNumber, String address, String serviceTime, Geometry geometry) {

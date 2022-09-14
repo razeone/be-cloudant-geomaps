@@ -65,9 +65,9 @@ public class PlaceServiceImpl implements PlaceService {
         placeRepository.deleteDocument(existingDocument.getId(), existingDocument.getRev());
     }
 
-    public List<Map> parseAllDocsResult(AllDocsResult allDocsResult) {
-        List<Map> result = new LinkedList<>();
-        allDocsResult.getRows().stream().forEach((d) -> {
+    public List<Map<String, Object>> parseAllDocsResult(AllDocsResult allDocsResult) {
+        List<Map<String, Object>> result = new LinkedList<>();
+        allDocsResult.getRows().stream().forEach(d -> {
             Map<String, Object> doc = d.getDoc().getProperties();
             doc.put("_id", d.getId());
             doc.put("_rev", d.getValue().getRev());
@@ -75,5 +75,4 @@ public class PlaceServiceImpl implements PlaceService {
         });
         return result;
     }
-    
 }
